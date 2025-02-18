@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "490IP",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
