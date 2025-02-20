@@ -28,19 +28,20 @@ def top_films():
     film_list = db.session.query(
         Inventory.film_id, 
         Film.title, 
-        Category.category_id, 
-        func.count(Rental.rental_id).label("rented")
+        Category.category_id,
+        func.count(Rental.rental_id).label("rented"),
+        Film.description
     ).join(Inventory, Inventory.inventory_id == Rental.inventory_id
     ).join(FilmCategory, FilmCategory.film_id == Inventory.film_id
     ).join(Category, Category.category_id == FilmCategory.category_id
     ).join(Film, Film.film_id == FilmCategory.film_id
-        ).group_by(Inventory.film_id, Film.title, Category.category_id
+        ).group_by(Inventory.film_id, Film.title, Category.category_id, Film.description
             ).order_by(func.count(Rental.rental_id).desc()).limit(5).all()
     
     films = []
 
     for film in film_list:
-        films.append({"film_id": film.film_id, "title": film.title,"category_id" :film.category_id, "rented":film.rented})
+        films.append({"film_id": film.film_id, "title": film.title,"category_id" :film.category_id, "rented":film.rented, "description" : film.description})
 
     return jsonify({'films': films})
 
